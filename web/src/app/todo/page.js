@@ -70,7 +70,7 @@ const TodoList = () => {
     switch (priority) {
       case 'High': return 'bg-red-500 text-white'; // Notion-style red
       case 'Medium': return 'bg-yellow-300 text-gray-800'; // Notion-style yellow
-      case 'Low': return 'bg-green-300 text-gray-800'; // Notion-style green
+      case 'Low': return 'bg-gray-300 text-gray-800'; // Notion-style green
       default: return 'bg-gray-200 text-gray-800'; // Default gray
     }
   };
@@ -81,6 +81,14 @@ const TodoList = () => {
       case 'Done': return 'bg-green-300 text-gray-800';    // Notion-style green
       case 'In progress': return 'bg-blue-200 text-gray-800'; // Notion-style blue
       default: return 'bg-gray-200 text-gray-800';       // Default gray
+    }
+  };
+  const getStatusDisplayName = (status) => {
+    switch (status) {
+      case 'Not started': return 'Planned'; // Notion-style gray
+      case 'Done': return 'Done!';    // Notion-style green
+      case 'In progress': return 'WIP'; // Notion-style blue
+      default: return 'Unknown';       // Default gray
     }
   };
 
@@ -97,7 +105,7 @@ const TodoList = () => {
     if (daysDiff <= 2 && daysDiff >0 ) {
       return 'text-red-500'; // Approaching within 2 days
     } else if (daysDiff <= 0) {
-      return 'bg-red-500 text-white'; // Overdue
+      return 'bg-red-500 text-white font-bold'; // Overdue
     } else {
       return 'text-gray-700'; // Default color
     }
@@ -121,7 +129,7 @@ const TodoList = () => {
               <tr key={index} className="border-b border-gray-200"> {/* Subtle border */}
                 <td className="w-1/2 px-4 py-2 font-medium text-gray-800 break-words">{task.name}</td>
                 <td className={`w-1/6 px-4 py-2 text-center rounded ${getPriorityColor(task.priority)}`}>{task.priority}</td>
-                <td className={`w-1/6 px-4 py-2 text-center rounded ${getStatusColor(task.status)}`}>{task.status}</td>
+                <td className={`w-1/6 px-4 py-2 text-center rounded ${getStatusColor(task.status)}`}>{getStatusDisplayName(task.status)}</td>
                 <td className={`w-1/6 px-4 py-2 ${getDueDateColor(task.due_date ? (task.due_date.end? task.due_date.end : task.due_date.start): null, task.status)}`}>
                   {task.due_date ? (task.due_date.end? task.due_date.end : task.due_date.start) : ""}
                 </td>
