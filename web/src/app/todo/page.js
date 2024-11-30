@@ -84,6 +84,24 @@ const TodoList = () => {
     }
   };
 
+  const getDueDateColor = (dueDate, status) => {
+    if (!dueDate || status === 'Done') {  // Don't apply special styling if Done or no due date
+      return 'text-gray-700'; // Default color
+    }
+
+    const now = new Date();
+    const due = new Date(dueDate);
+    const timeDiff = due.getTime() - now.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    if (daysDiff <= 2 && daysDiff >0 ) {
+      return 'text-red-500'; // Approaching within 2 days
+    } else if (daysDiff <= 0) {
+      return 'bg-red-500 text-white'; // Overdue
+    } else {
+      return 'text-gray-700'; // Default color
+    }
+  };
 
   return (
     <div className="container mx-auto p-4 bg-gray-50"> {/* Light gray background */}
@@ -104,7 +122,9 @@ const TodoList = () => {
                 <td className="w-1/2 px-4 py-2 font-medium text-gray-800 break-words">{task.name}</td>
                 <td className={`w-1/6 px-4 py-2 text-center rounded ${getPriorityColor(task.priority)}`}>{task.priority}</td>
                 <td className={`w-1/6 px-4 py-2 text-center rounded ${getStatusColor(task.status)}`}>{task.status}</td>
-                <td className="w-1/6 px-4 py-2 text-gray-700">{task.due_date ? task.due_date.end_time : ""}</td>
+                <td className={`w-1/6 px-4 py-2 ${getDueDateColor(task.due_date ? (task.due_date.end? task.due_date.end : task.due_date.start): null, task.status)}`}>
+                  {task.due_date ? (task.due_date.end? task.due_date.end : task.due_date.start) : ""}
+                </td>
               </tr>
             ))}
           </tbody>
