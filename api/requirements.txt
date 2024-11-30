@@ -1,0 +1,4 @@
+flask
+flask-cors
+notion-client
+python-dotenv
